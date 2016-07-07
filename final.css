@@ -1,0 +1,36 @@
+body{
+	background-repeat: no-repeat;
+	background-size: 1030px 800px;
+	background-position: -50px -15px;
+}
+
+h1{
+	font-family: Georgia;
+	margin-top: 20px;
+	margin-left: 300px;
+	margin-bottom: 20px;
+}
+
+input{
+	margin: 10px;
+
+}
+
+input{
+	border-radius: 10px;
+}
+
+textarea{
+	border-radius: 10px;
+}
+
+button{
+	margin: 20px;
+	border: 45px;
+	padding: 10px;
+	
+}
+
+#start_button{
+	font-size: 20px;
+}

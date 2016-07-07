@@ -1,0 +1,47 @@
+<html>
+
+<title>The Lecturer | The future of Presentations</title>
+
+<body background="https://content.etilize.com/650/1010055247.jpg">
+
+<h1>The Lecturer - The Future of Presentations</h1>
+
+<link href="final.css" rel="stylesheet">
+ 
+<script type="text/javascript">
+
+function display(input) {
+ 
+    var inputO=0;
+
+    var fileInput = document.getElementById('fileInput');
+   
+       if(input<fileInput.files.length && input>=0)
+    {
+      inputO=input;
+    }
+    var file=fileInput.files[inputO];
+    var image=document.querySelector('img');
+    var reader=new FileReader();
+    reader.onloadend=function(){
+      image.src=reader.result;
+    }
+    if(file){
+      reader.readAsDataURL(file);
+    }else{
+      image.src="";
+    }
+}
+</script>
+  <div style="right:30px;">
+  <input type="file" style="color:white;"  id="fileInput" multiple></div>
+  <div>
+  <img src="" width="60%" height="75%" style="margin-left:70px; margin-top:7px">
+
+<iframe src="TheLectureriFrame.html" style=" width:350px; height:530px;  position:absolute; right:0px; "></iframe>
+</div>
+
+</body>
+
+
+</html>

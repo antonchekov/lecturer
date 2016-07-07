@@ -1,0 +1,186 @@
+<html>
+
+<link href="final.css" rel="stylesheet">
+
+Last Word:<input type = "text" id ="textbox">
+<br>
+Tester:<input type = "text" id ="tester">
+<br>
+Input Keywords:<input type = "text" id = "input">
+<button onclick="get_data();show_data();">Enter Data</button>
+<br>
+Array Data:
+<br>
+<textarea rows="5" cols="25" id="arraydata"></textarea>
+<br>
+<button onclick="show_data()">Show Array Data</button>
+
+<br>
+<div>
+  <br>
+  <a href="#" id="start_button" onclick="startDictation(event)">Start Presentation</a>
+</div>
+ 
+<div id="results">
+  <span id="final_span" class="final"></span>
+  <span id="interim_span" class="interim"></span>
+</div>
+ 
+<script type="text/javascript">
+console.log("Hi");
+var final_transcript = '';
+var recognizing = false;
+
+var textbox = document.getElementById("textbox");  
+var tester = document.getElementById("tester"); 
+var slidenum = 0;
+ 
+var array = []; //list of keywords
+var input = document.getElementById("input"); 
+
+if ('webkitSpeechRecognition' in window) {
+ 
+  var recognition = new webkitSpeechRecognition();
+ 
+  recognition.continuous = true;
+  recognition.interimResults = false;
+ 
+  recognition.onstart = function() {
+    recognizing = true;
+    console.log("onstart");
+  };
+ 
+  recognition.onerror = function(event) {
+    console.log("Error");
+  };
+ 
+  recognition.onend = function() {
+    recognizing = false;
+    console.log("onend");
+  };
+ 
+  recognition.onresult = function(event) {
+    for (var i = event.resultIndex; i < event.results.length; ++i) {
+      lastword = ""; 
+      if (event.results[i].isFinal) {
+        final_transcript += event.results[i][0].transcript; 
+        var words = final_transcript.toLowerCase(); 
+        var n = words.split(" ");
+        var lastword = n[n.length - 1];
+        textbox.value = lastword; 
+        console.log(lastword);
+        console.log(array);
+
+        final_transcript = '';
+        //language recognition code to come in the loop below
+        
+
+        if (lastword == 'next')
+        {
+          slidenum++;
+          slidenum = checkSlidenum(slidenum);
+          tester.value = slidenum;
+
+        }
+        if (lastword == 'back')
+        {
+          slidenum--; 
+          slidenum = checkSlidenum(slidenum);
+          tester.value = slidenum;
+        }
+        var num = searchkeyword(lastword);
+        if (num >= 0)
+        {
+          slidenum = num; 
+            
+          tester.value = slidenum; 
+        }
+        
+      } 
+
+      if(slidenum>=0&&slidenum<array.length)parent.display(slidenum);
+       
+    }
+
+  
+    
+  };
+ //   startDictation(event);
+}
+ 
+var two_line = /\n\n/g;
+var one_line = /\n/g;
+function linebreak(s) {
+  return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
+}
+ 
+function capitalize(s) {
+  return s.replace(s.substr(0,1), function(m) { return m.toUpperCase(); });
+}
+ 
+function startDictation(event) {
+  //if (recognizing) {
+    //recognition.stop();
+    //return;
+  //}
+  recognition.abort();
+  final_transcript = '';
+  recognition.lang = 'en-US';
+  recognition.start();
+  final_span.innerHTML = '';
+  interim_span.innerHTML = '';
+}
+
+function get_data()
+{
+  var text = document.getElementById("input").value; 
+  array.push(text.toLowerCase()); 
+  input.value = ""; 
+}
+
+function show_data()
+{
+  var i = 0; 
+  var j = array.length; 
+  var data = ""; 
+
+  while(i < j)
+  {
+    data = data + array[i] + "\n";
+    i++;  
+  }
+
+  document.getElementById("arraydata").value = data; 
+}
+
+function searchkeyword(word)
+{
+   var i = 0; 
+   var j = array.length; 
+
+    while(i < j)
+  {
+    if (array[i] == word)
+      {return i; }
+    i++;  
+  }
+  return -1; 
+} 
+function checkSlidenum(num){
+
+  if(num<0){
+    return 0;
+  }
+  else{
+    if(num>array.length-1){
+      return array.length-1;
+    }
+    else{
+      return num;
+    }
+  }
+}
+
+</script>
+
+</html>
